@@ -24,6 +24,11 @@ jobs:
       with:
         fetch-depth: 50
 
+    - name: resharper
+      uses: glassechidna/resharper-action@master
+      with:
+        solution: src\Notepads.sln
+
     - if: github.event_name != 'pull_request'
       name: Cache SonarCloud packages
       id: cache_sonar_packages
