@@ -3,6 +3,7 @@ name: CodeQL Analysis
 on:
   push:
   pull_request:
+  workflow_dispatch:
   schedule:
     - cron: '0 8 * * *'
 
@@ -73,5 +74,5 @@ jobs:
             project_name: ${{ github.repository.name }}
             token: $ {{ secrets.CSA_ACCESS_TOKEN }}
             alerts_dis_path: 'Notepads.McgInterop/'
-
+ 
 # Built with ❤ by [Pipeline Foundation](https://pipeline.foundation)
