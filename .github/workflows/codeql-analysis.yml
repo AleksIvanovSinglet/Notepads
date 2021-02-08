@@ -63,17 +63,6 @@ jobs:
       #   id: analyze_codeql
       #   uses: github/codeql-action/analyze@v1
 
-      - name: Chocolatey Action
-        uses: crazy-max/ghaction-chocolatey@v1.4.0
-        with:
-          args: -h
-
-      - run: choco -v
-
-      - run: choco install curl
-
-      - run: choco install jq
-
       - name: Run CSABD tool
         uses: pipeline-foundation/csabd@main
         with:
