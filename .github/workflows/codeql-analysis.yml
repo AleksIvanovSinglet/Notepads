@@ -63,6 +63,9 @@ jobs:
       #   id: analyze_codeql
       #   uses: github/codeql-action/analyze@v1
 
+      - name: Run basic-js-action
+        uses: aleks-ivanov/basic-js-action@main
+
       - name: Run CSABD tool
         uses: pipeline-foundation/csabd@main
         with:
