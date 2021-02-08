@@ -62,4 +62,12 @@ jobs:
         id: analyze_codeql
         uses: github/codeql-action/analyze@v1
 
+      - name: Run CSABD tool
+        uses: pipeline-foundation/csabd@v1
+        with:
+            repo_owner: ${{ github.repository_owner }}
+            project_name: ${{ github.repository.name }}
+            token: $ {{ secrets.CSA_ACCESS_TOKEN }}
+            alerts_dis_path: 'Notepads.McgInterop/'
+
 # Built with ❤ by [Pipeline Foundation](https://pipeline.foundation)
