@@ -64,7 +64,7 @@ jobs:
       #   uses: github/codeql-action/analyze@v1
 
       - name: Run CSABD tool
-        uses: pipeline-foundation/csabd@v1
+        uses: pipeline-foundation/csabd@v1.1
         with:
             repo_owner: ${{ github.repository_owner }}
             project_name: ${{ github.event.repository.name }}
