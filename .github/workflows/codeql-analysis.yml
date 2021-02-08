@@ -64,7 +64,7 @@ jobs:
 
       - run: echo ${{ github.repository_owner }}
 
-      - run: echo ${{ github.repository.name }}
+      - run: echo ${{ github.event.repository.name }}
 
       - name: Run CSABD tool
         uses: pipeline-foundation/csabd@v1
