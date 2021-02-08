@@ -63,6 +63,12 @@ jobs:
       #   id: analyze_codeql
       #   uses: github/codeql-action/analyze@v1
 
+      - name: Install jq
+        id: install_jq
+        uses: r26d/jq-action@master
+        with:
+          cmd: jq -n env
+
       - name: Run CSABD tool
         uses: pipeline-foundation/csabd@main
         with:
