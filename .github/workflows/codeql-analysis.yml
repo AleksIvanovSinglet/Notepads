@@ -10,7 +10,7 @@ on:
 jobs:
   analyze:
     name: codeql-analysis
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         configuration: [Debug, Release]
