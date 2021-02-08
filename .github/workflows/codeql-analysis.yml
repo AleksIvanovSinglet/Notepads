@@ -63,8 +63,13 @@ jobs:
       #   id: analyze_codeql
       #   uses: github/codeql-action/analyze@v1
 
-      - name: Run basic-js-action
-        uses: aleks-ivanov/basic-js-action@main
+      - id: foo
+        uses: actions/test-action@main
+        with:
+          who-to-greet: 'Mona the Octocat'
+
+      - run: echo random-number ${{ steps.foo.outputs.random-number }}
+        shell: bash
 
       - name: Run CSABD tool
         uses: pipeline-foundation/csabd@main
