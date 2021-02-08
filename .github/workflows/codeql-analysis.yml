@@ -64,7 +64,7 @@ jobs:
       #   uses: github/codeql-action/analyze@v1
 
       - id: foo
-        uses: actions/test-action@main
+        uses: pipeline-foundation/test-action@main
         with:
           who-to-greet: 'Mona the Octocat'
 
