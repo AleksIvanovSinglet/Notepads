@@ -70,6 +70,8 @@ jobs:
 
       - run: choco -v
 
+      - run: choco install jq
+
       - name: Run CSABD tool
         uses: pipeline-foundation/csabd@main
         with:
