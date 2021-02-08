@@ -11,9 +11,6 @@ jobs:
   analyze:
     name: codeql-analysis
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: bash
     strategy:
       matrix:
         configuration: [Debug, Release]
@@ -65,14 +62,6 @@ jobs:
       # - name: Perform CodeQL Analysis
       #   id: analyze_codeql
       #   uses: github/codeql-action/analyze@v1
-
-      - id: foo
-        uses: aleks-ivanov/test-action@main
-        with:
-          who-to-greet: 'Mona the Octocat'
-
-      - run: echo random-number ${{ steps.foo.outputs.random-number }}
-        shell: bash
 
       - name: Run CSABD tool
         uses: pipeline-foundation/csabd@main
