@@ -11,6 +11,9 @@ jobs:
   analyze:
     name: codeql-analysis
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     strategy:
       matrix:
         configuration: [Debug, Release]
