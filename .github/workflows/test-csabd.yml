@@ -1,0 +1,16 @@
+name: Test CSABD
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Run CSABD tool
+        uses: pipeline-foundation/csabd@main
+        with:
+            repo_owner: ${{ github.repository_owner }}
+            project_name: ${{ github.event.repository.name }}
+            token: ${{ secrets.CSA_ACCESS_TOKEN }}
+            alerts_dis_path: 'Notepads.McgInterop/'
