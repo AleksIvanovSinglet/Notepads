@@ -20,7 +20,7 @@
 
 - Select an account for your organization setup
 
-- On Repository Access select "Only select repositories" and select your project and click the "Save" button
+- On Repository Access select "Only select repositories" and select the project and click the "Save" button
 
 - On the "Create organization page" don't change your Key and click "Continue"
 
@@ -30,7 +30,7 @@
 
 - From the dropdown select "Analyze new project"
 
-- Select your project and click "Set Up" button at the top right corner
+- Select the project and click "Set Up" button at the top right corner
 
 - Under the "Choose another analysis method" sign click the "With Github Actions" sign
 
@@ -86,9 +86,9 @@ NOTE: **screenshots are only exemplary**
 
 ## *. Set up Dependabot
 
-Dependabot is a GitHub native security tool that goes through the dependencies in your project and creates alerts, and PRs with updates when a new and/or non-vulnerable version is found.
+Dependabot is a GitHub native security tool that goes through the dependencies in the project and creates alerts, and PRs with updates when a new and/or non-vulnerable version is found.
 
-- for PRs with version updates, this pipeline comes pre-configured for all current dependency sources in your project, so at "Insights" tab -> "Dependency graph" -> "Dependabot", you should be able to see all tracked sources of dependencies, when they have been checked last and view a full log of the last check
+- for PRs with version updates, this pipeline comes pre-configured for all current dependency sources in the project, so at "Insights" tab -> "Dependency graph" -> "Dependabot", you should be able to see all tracked sources of dependencies, when they have been checked last and view a full log of the last check
 
 ![Dependabot_tab](/ScreenShots/CI-CD_DOCUMENTATION/Dependabot_tab.png)
 
@@ -103,7 +103,7 @@ Dependabot is a GitHub native security tool that goes through the dependencies i
 
 3. Click "Enable" for both "Dependabot alerts" and "Dependabot security updates"
 
-- By enabling "Dependabot alerts", you would be notified for any vulnerable dependencies in your project. At "Security" tab -> "Dependabot alerts", you can manage all alerts. By clicking on an alert, you would be able to see a detailed explanation of the vulnerability and a viable solution.
+- By enabling "Dependabot alerts", you would be notified for any vulnerable dependencies in the project. At "Security" tab -> "Dependabot alerts", you can manage all alerts. By clicking on an alert, you would be able to see a detailed explanation of the vulnerability and a viable solution.
 
 ![Dependabot_alerts_page](/ScreenShots/CI-CD_DOCUMENTATION/Dependabot_alerts_page.png)
 
@@ -146,8 +146,10 @@ We've also configured CodeQL to run on schedule, so every day at 8:00AM UTC, it 
 
 ![CodeQL_alert_page](/ScreenShots/CI-CD_DOCUMENTATION/CodeQL_alert_page.png)
 
-### Code scanning alerts bulk dismissal
+### Code scanning alerts bulk dismissal tool
 ##### - currently, GitHub allows for only 25 code scanning alerts to be dismissed at a time. Sometimes, you might have hundreds you would like to dismiss, so you will have to click many times and wait for a long time to dismiss them. Via the "csa-bulk-dismissal.yml", you would be able to that with one click.
+
+NOTE: This tool executes manual **only**. It won't execute on any other GitHub event like push commit, PR creation etc.
 
 #### 1. Setup
 
@@ -215,7 +217,25 @@ We've also configured CodeQL to run on schedule, so every day at 8:00AM UTC, it 
 
 NOTE: "closed" refers to "dismissed" alerts
 
-NOTE: **screenshots are only exemplary**
+#### 3. Customization
 
+The "ALERT_DESC" strategy matrix in the pipeline, allows for more precise filtering of alerts to bulk dismiss. It uses the description of the alert to determine if it has to be dismissed or not. We've added the following alert descriptions by default:
+
+- "Calls to unmanaged code"
+- "Unmanaged code"
+
+To add more descriptions, follow these steps:
+
+1. In your source code, open ".github/workflows/csa-bulk-dismissal.yml"
+
+2. On line 11, notice "ALERT_DESC: ['"Calls to unmanaged code"', '"Unmanaged code"']". This is the array of descriptions that the CSABD (Code scanning alerts bulk dismissal) tool uses to filter through the alerts:
+
+![CSA_custom_1](/ScreenShots/CI-CD_DOCUMENTATION/CSA_custom_1.png)
+
+3. To add more descriptions use comma separation, followed by a single space and the description enclosed in double quotes, then enclosed in single quotes:
+
+![CSA_custom_2](/ScreenShots/CI-CD_DOCUMENTATION/CSA_custom_2.png)
+
+#
 
 Built with ❤ by [Pipeline Foundation](https://pipeline.foundation)
