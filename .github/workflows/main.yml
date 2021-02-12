@@ -32,15 +32,13 @@ jobs:
         with:
           fetch-depth: 50
 
-
-      - name: Get version
+      - name: Get version from appxmanifest
         id: get_version
-        uses: jasondavis303/net-sdk-proj-file-version@master
-        with:
-          PROJ_FILE: src/Notepads/Notepads.csproj
-
-      - name: Next Step
-        run: echo "${{ steps.get_version.outputs.ASSEMBLY_VERSION }}"
+        run: |
+          cd src/Notepads/
+          TEXT=$(grep -Po ' \Version\=\"([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)\"' Package.appxmanifest)
+          TEXT=$(echo "$TEXT" | grep -oP "([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)")
+          echo $TEXT
 
 
       # - if: github.event_name != 'pull_request'
