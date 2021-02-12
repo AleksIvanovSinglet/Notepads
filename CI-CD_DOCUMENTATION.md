@@ -3,7 +3,9 @@
 * after merging the PR, the first run of the main workflow will not complete successfully, because it requires specific setup explained in this documentation
 
 #
+
 ## 1. Set up SonarCloud
+
 ### SonarCloud is a cloud-based code quality and security service
 
 #### Create your SonarCloud project
