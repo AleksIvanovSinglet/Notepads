@@ -10,6 +10,9 @@ jobs:
     env:
       Solution_Name: src\Notepads.sln
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     steps:
 
       # - name: Set up JDK 11
