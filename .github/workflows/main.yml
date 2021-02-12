@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
     env:
       Solution_Name: src\Notepads.sln
     runs-on: windows-latest
@@ -37,10 +37,17 @@ jobs:
         shell: bash
         run: |
           cd src/Notepads/
-          TEXT=$(grep -oE ' \Version\=\"([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)\"' Package.appxmanifest)
-          TEXT=$(echo "$TEXT" | grep -oE "([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)")
-          echo $TEXT
+          VERSION_STR=$(grep -oE ' \Version\=\"([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)\"' Package.appxmanifest)
+          VERSION=$(echo "$VERSION_STR" | grep -oE "([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)")
+          echo "::set-output name=version::$(echo $VERSION)"
 
+      - name: Get latest tag
+        id: get_latest_tag
+        shell: bash
+        run: |
+          git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags "https://github.com/$GIR_URL.git" '*.*.*' | tail --lines=1 | cut --delimiter='/' --fields=3 
+        env:
+          GIT_URL: ${{ github.repository }}
 
       # - if: github.event_name != 'pull_request'
       #   name: Cache SonarCloud packages
