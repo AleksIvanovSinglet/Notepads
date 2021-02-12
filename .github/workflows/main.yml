@@ -45,7 +45,7 @@ jobs:
         id: get_latest_tag
         shell: bash
         run: |
-          git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags "https://github.com/$GIR_URL.git" '*.*.*' | tail --lines=1 | cut --delimiter='/' --fields=3 
+          git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags "https://github.com/$GIT_URL.git" '*.*.*' | tail --lines=1 | cut --delimiter='/' --fields=3 
         env:
           GIT_URL: ${{ github.repository }}
 
