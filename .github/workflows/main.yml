@@ -32,91 +32,102 @@ jobs:
         with:
           fetch-depth: 50
 
-      - if: github.event_name != 'pull_request'
-        name: Cache SonarCloud packages
-        id: cache_sonar_packages
-        uses: actions/cache@v2
+
+      - name: Get version
+        id: get_version
+        uses: jasondavis303/assembly-info-version
         with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+          AI_PATH: src/Notepads/Properties/AssemblyInfo.cs
 
-      - if: github.event_name != 'pull_request'
-        name: Cache SonarCloud scanner
-        id: cache_sonar_scanner
-        uses: actions/cache@v2
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Next Step
+        run: echo "${{ steps.get_version.outputs.ASSEMBLY_VERSION }}"
 
-      - if: github.event_name != 'pull_request' && steps.cache_sonar_scanner.outputs.cache-hit != 'true'
-        name: Install SonarCloud scanner
-        id: install_sonar_scanner
-        shell: powershell
-        run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
-      - if: github.event_name != 'pull_request'
-        name: Lowercase string generator
-        id: lowercase_string_gen
-        shell: powershell
-        run: |
-          $LOWERCASE_OWNER = "${{ github.repository_owner }}".ToLower()
-          echo "::set-output name=owner_name::$LOWERCASE_OWNER"
+      # - if: github.event_name != 'pull_request'
+      #   name: Cache SonarCloud packages
+      #   id: cache_sonar_packages
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~\sonar\cache
+      #     key: ${{ runner.os }}-sonar
+      #     restore-keys: ${{ runner.os }}-sonar
 
-      - if: github.event_name != 'pull_request'
-        name: Initialize SonarCloud scanner
-        id: init_sonar_scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
-        run: .\.sonar\scanner\dotnet-sonarscanner begin /k:"${{ github.repository_owner }}_${{ github.event.repository.name }}" /o:"${{ steps.lowercase_string_gen.outputs.owner_name }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+      # - if: github.event_name != 'pull_request'
+      #   name: Cache SonarCloud scanner
+      #   id: cache_sonar_scanner
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: .\.sonar\scanner
+      #     key: ${{ runner.os }}-sonar-scanner
+      #     restore-keys: ${{ runner.os }}-sonar-scanner
 
-      - name: Restore the application
-        id: restore_application
-        run: |
-          msbuild $env:Solution_Name `
-          /t:Restore `
-          /p:Configuration=$env:Configuration
-        env:
-          Configuration: ${{ matrix.configuration }}
+      # - if: github.event_name != 'pull_request' && steps.cache_sonar_scanner.outputs.cache-hit != 'true'
+      #   name: Install SonarCloud scanner
+      #   id: install_sonar_scanner
+      #   shell: powershell
+      #   run: |
+      #     New-Item -Path .\.sonar\scanner -ItemType Directory
+      #     dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
-      - name: Build and generate bundles
-        id: build_app
-        run: |
-          msbuild $env:Solution_Name `
-          /p:Platform=$env:Platform `
-          /p:Configuration=$env:Configuration `
-          /p:UapAppxPackageBuildMode=$env:Uap_Appx_Package_Build_Mode `
-          /p:AppxBundle=$env:Appx_Bundle `
-          /p:AppxPackageSigningEnabled=$env:Appx_Package_Signing_Enabled `
-          /p:AppxBundlePlatforms=$env:Appx_Bundle_Platforms `
-          /p:AppxPackageDir=$env:Artifacts_Dir
-        env:
-          Platform: x64
-          Configuration: ${{ matrix.configuration }}
-          Uap_Appx_Package_Build_Mode: StoreUpload
-          Appx_Bundle: Always
-          Appx_Package_Signing_Enabled: false
-          Appx_Bundle_Platforms: x86|x64
-          Artifacts_Dir: ${{ github.workspace }}/Artifacts
+      # - if: github.event_name != 'pull_request'
+      #   name: Lowercase string generator
+      #   id: lowercase_string_gen
+      #   shell: powershell
+      #   run: |
+      #     $LOWERCASE_OWNER = "${{ github.repository_owner }}".ToLower()
+      #     echo "::set-output name=owner_name::$LOWERCASE_OWNER"
 
-      - if: github.event_name != 'pull_request'
-        name: Send SonarCloud results
-        id: send_sonar_results
-        env:
-          GITHUB_TOKEN: ${{ secrets.SONAR_GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
-        run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      # - if: github.event_name != 'pull_request'
+      #   name: Initialize SonarCloud scanner
+      #   id: init_sonar_scanner
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   shell: powershell
+      #   run: .\.sonar\scanner\dotnet-sonarscanner begin /k:"${{ github.repository_owner }}_${{ github.event.repository.name }}" /o:"${{ steps.lowercase_string_gen.outputs.owner_name }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
 
-      - name: Upload build artifacts
-        id: upload_artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: Notepads build artifacts
-          path: Artifacts/      
+      # - name: Restore the application
+      #   id: restore_application
+      #   run: |
+      #     msbuild $env:Solution_Name `
+      #     /t:Restore `
+      #     /p:Configuration=$env:Configuration
+      #   env:
+      #     Configuration: ${{ matrix.configuration }}
+
+      # - name: Build and generate bundles
+      #   id: build_app
+      #   run: |
+      #     msbuild $env:Solution_Name `
+      #     /p:Platform=$env:Platform `
+      #     /p:Configuration=$env:Configuration `
+      #     /p:UapAppxPackageBuildMode=$env:Uap_Appx_Package_Build_Mode `
+      #     /p:AppxBundle=$env:Appx_Bundle `
+      #     /p:AppxPackageSigningEnabled=$env:Appx_Package_Signing_Enabled `
+      #     /p:AppxBundlePlatforms=$env:Appx_Bundle_Platforms `
+      #     /p:AppxPackageDir=$env:Artifacts_Dir
+      #   env:
+      #     Platform: x64
+      #     Configuration: ${{ matrix.configuration }}
+      #     Uap_Appx_Package_Build_Mode: StoreUpload
+      #     Appx_Bundle: Always
+      #     Appx_Package_Signing_Enabled: false
+      #     Appx_Bundle_Platforms: x86|x64
+      #     Artifacts_Dir: ${{ github.workspace }}/Artifacts
+
+      # - if: github.event_name != 'pull_request'
+      #   name: Send SonarCloud results
+      #   id: send_sonar_results
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.SONAR_GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   shell: powershell
+      #   run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+      # - name: Upload build artifacts
+      #   id: upload_artifacts
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: Notepads build artifacts
+      #     path: Artifacts/      
 
 # Built with ❤ by [Pipeline Foundation](https://pipeline.foundation)
