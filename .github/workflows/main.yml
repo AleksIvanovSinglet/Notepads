@@ -35,7 +35,7 @@ jobs:
 
       - name: Get version
         id: get_version
-        uses: jasondavis303/assembly-info-version
+        uses: jasondavis303/assembly-info-version@main
         with:
           AI_PATH: src/Notepads/Properties/AssemblyInfo.cs
 
