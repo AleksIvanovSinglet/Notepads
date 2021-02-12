@@ -41,7 +41,8 @@ jobs:
           cd src/Notepads/
           VERSION_STR=$(grep -oE ' \Version\=\"([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)\"' Package.appxmanifest)
           VERSION=$(echo "$VERSION_STR" | grep -oE "([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)")
-          echo "::set-output name=version::$(echo $VERSION)"
+          echo "::set-output name=version_num::$(echo $VERSION)"
+          echo "::set-output name=version_tag::$(echo v"$VERSION")"
 
       - name: Get latest tag
         id: get_latest_tag
@@ -53,7 +54,8 @@ jobs:
           GIT_URL: ${{ github.repository }}
 
       - run: |
-          echo "${{ steps.get_assembly_version.outputs.version }}"
+          echo "${{ steps.get_assembly_version.outputs.version_num }}"
+          echo "${{ steps.get_assembly_version.outputs.version_tag }}"
           echo "${{ steps.get_latest_tag.outputs.tag }}"
 
       # - if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -63,7 +65,7 @@ jobs:
       #   with:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
       #     default_bump: false
-      #     custom_tag: ${{ steps.get_assembly_version.outputs.version }} 
+      #     custom_tag: ${{ steps.get_assembly_version.outputs.version_num }} 
 
       # - if: github.event_name != 'pull_request'
       #   name: Cache SonarCloud packages
