@@ -37,7 +37,7 @@ jobs:
         id: get_version
         uses: jasondavis303/net-sdk-proj-file-version@master
         with:
-          AI_PATH: src/Notepads/Notepads.csproj
+          PROJ_FILE: src/Notepads/Notepads.csproj
 
       - name: Next Step
         run: echo "${{ steps.get_version.outputs.ASSEMBLY_VERSION }}"
