@@ -10,9 +10,6 @@ jobs:
     env:
       Solution_Name: src\Notepads.sln
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: bash
     steps:
 
       # - name: Set up JDK 11
@@ -37,9 +34,10 @@ jobs:
 
       - name: Get version from appxmanifest
         id: get_version
+        shell: bash
         run: |
           cd src/Notepads/
-          TEXT=$(grep -Po ' \Version\=\"([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)\"' Package.appxmanifest)
+          TEXT=$(grep -oE ' \Version\=\"([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)\"' Package.appxmanifest)
           TEXT=$(echo "$TEXT" | grep -oP "([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)")
           echo $TEXT
 
