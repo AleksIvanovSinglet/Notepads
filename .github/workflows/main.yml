@@ -53,19 +53,14 @@ jobs:
         env:
           GIT_URL: ${{ github.repository }}
 
-      - run: |
-          echo "${{ steps.get_assembly_version.outputs.version_num }}"
-          echo "${{ steps.get_assembly_version.outputs.version_tag }}"
-          echo "${{ steps.get_latest_tag.outputs.tag }}"
-
-      # - if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-      #   name: Bump release version and create release tag
-      #   id: tag_generator
-      #   uses: mathieudutour/github-tag-action@v5
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     default_bump: false
-      #     custom_tag: ${{ steps.get_assembly_version.outputs.version_num }} 
+      - if: steps.get_assembly_version.outputs.version_tag != steps.get_latest_tag.outputs.tag
+        name: Bump release version and create release tag
+        id: tag_generator
+        uses: mathieudutour/github-tag-action@v5
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: false
+          custom_tag: ${{ steps.get_assembly_version.outputs.version_num }} 
 
       # - if: github.event_name != 'pull_request'
       #   name: Cache SonarCloud packages
