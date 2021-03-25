@@ -9,13 +9,14 @@ jobs:
       matrix:
         configuration: [ Production ]
     outputs:
-      new_version: ${{ steps.get_assembly_version.outputs.version_num }}
-      new_version_tag: ${{ steps.get_assembly_version.outputs.version_tag }}
+      new_version: ${{ steps.tag_generator.outputs.new_version }}
+      new_version_tag: ${{ steps.tag_generator.outputs.new_tag }}
       latest_tag: ${{ steps.get_latest_tag.outputs.tag }}
       is_push_to_master: ${{ steps.step_conditionals_handler.outputs.is_push_to_master }}
     env:
       SOLUTION_NAME: src\Notepads.sln
       CONFIGURATION: ${{ matrix.configuration }}
+      DEFAULT_DIR: ${{ github.workspace }}
     steps:
       - name: Steps' conditionals handler
         id: step_conditionals_handler
@@ -60,6 +61,16 @@ jobs:
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: false
+
+      - name: Update Package.appxmanifest version
+        id: update_appxmanifest
+        run: |
+          cd src/Notepads/
+          $xml = [xml](Get-Content Package.appxmanifest)
+          $xml.Package.Identity.SetAttribute('Version', '"$env:NEW_VERSION".0')
+          $xml.save("$env:DEFAULT_DIR\src\Notepads\Package.appxmanifest")
+        env:
+          NEW_VERSION: ${{ steps.tag_generator.outputs.new_version }}
 
       - if: steps.step_conditionals_handler.outputs.is_not_pr == 'true'
         name: Cache SonarCloud packages
@@ -119,7 +130,6 @@ jobs:
           [IO.File]::WriteAllBytes($TARGET_FILE, $FROM_BASE64_STR)
         env:
           BASE64_STR: ${{ secrets.PACKAGE_CERTIFICATE_BASE64 }}
-          DEFAULT_DIR: ${{ github.workspace }}
 
       - name: Restore the application
         id: restore_application
