@@ -100,21 +100,14 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
       - if: steps.step_conditionals_handler.outputs.is_not_pr == 'true'
-        name: Lowercase string generator
-        id: lowercase_string_gen
-        shell: pwsh
-        run: |
-          $LOWERCASE_REPOSITORY_NAME = "${{ github.event.repository.name }}".ToLower()
-          echo "::set-output name=repository_name::$LOWERCASE_REPOSITORY_NAME"
-
-      - if: steps.step_conditionals_handler.outputs.is_not_pr == 'true'
         name: Initialize SonarCloud scanner
         id: init_sonar_scanner
         shell: pwsh
         run: |
+          $LOWERCASE_REPOSITORY_OWNER = "${{ github.repository_owner }}".ToLower()        
           .\.sonar\scanner\dotnet-sonarscanner begin `
           /k:"${{ github.repository_owner }}_${{ github.event.repository.name }}" `
-          /o:"${{ steps.lowercase_string_gen.outputs.repository_name }}" `
+          /o:"$LOWERCASE_REPOSITORY_OWNER" `
           /d:sonar.login="$env:SONAR_TOKEN" `
           /d:sonar.host.url="https://sonarcloud.io"
         env:
