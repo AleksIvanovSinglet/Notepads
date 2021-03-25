@@ -68,9 +68,16 @@ jobs:
           cd src/Notepads/
           $xml = [xml](Get-Content Package.appxmanifest)
           $xml.Package.Identity.SetAttribute('Version', '"$env:NEW_VERSION".0')
-          $xml.save("$env:DEFAULT_DIR\src\Notepads\Package.appxmanifest")
+          $xml.save("src\Notepads\Package.appxmanifest")
         env:
           NEW_VERSION: ${{ steps.tag_generator.outputs.new_version }}
+
+      - name: Upload build artifacts
+        id: upload_appxmanifest
+        uses: actions/upload-artifact@v1
+        with:
+          name: Package.appxmanifest
+          path: src/Notepads/Package.appxmanifest
 
       - if: steps.step_conditionals_handler.outputs.is_not_pr == 'true'
         name: Cache SonarCloud packages
