@@ -66,10 +66,10 @@ jobs:
         name: Update Package.appxmanifest version
         id: update_appxmanifest
         run: |
-          cd src/Notepads/
-          $xml = [xml](Get-Content Package.appxmanifest)
+          $APPXMANIFEST_PATH = 'src/Notepads/Package.appxmanifest'
+          $xml = [xml](Get-Content $APPXMANIFEST_PATH)
           $xml.Package.Identity.SetAttribute('Version', "$env:NEW_VERSION.0")
-          $xml.save("$env:DEFAULT_DIR\src\Notepads\Package.appxmanifest")
+          $xml.save($APPXMANIFEST_PATH)
         env:
           NEW_VERSION: ${{ steps.tag_generator.outputs.new_version }}
 
