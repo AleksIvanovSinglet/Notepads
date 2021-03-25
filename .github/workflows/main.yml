@@ -54,7 +54,7 @@ jobs:
           fetch-depth: 50
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bump GitHub tag
+      - name: Bump tag
         id: tag_generator
         uses: mathieudutour/github-tag-action@v5
         with: 
