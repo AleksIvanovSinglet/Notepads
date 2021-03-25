@@ -5,16 +5,13 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   ci:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        configuration: [ Production ]
     outputs:
       new_version: ${{ steps.tag_generator.outputs.new_version }}
       new_version_tag: ${{ steps.tag_generator.outputs.new_tag }}
       is_push_to_master: ${{ steps.step_conditionals_handler.outputs.is_push_to_master }}
     env:
       SOLUTION_NAME: src\Notepads.sln
-      CONFIGURATION: ${{ matrix.configuration }}
+      CONFIGURATION: Production
       DEFAULT_DIR: ${{ github.workspace }}
     steps:
       - name: Steps' conditionals handler
@@ -34,7 +31,6 @@ jobs:
         env:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_REF: ${{ github.ref }}
-          BUILD_CONFIGURATION: ${{ matrix.configuration }}
 
       - if: steps.step_conditionals_handler.outputs.is_not_pr == 'true'
         name: Set up JDK 11
@@ -100,21 +96,14 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
       - if: steps.step_conditionals_handler.outputs.is_not_pr == 'true'
-        name: Lowercase string generator
-        id: lowercase_string_gen
-        shell: pwsh
-        run: |
-          $LOWERCASE_REPOSITORY_NAME = "${{ github.event.repository.name }}".ToLower()
-          echo "::set-output name=repository_name::$LOWERCASE_REPOSITORY_NAME"
-
-      - if: steps.step_conditionals_handler.outputs.is_not_pr == 'true'
         name: Initialize SonarCloud scanner
         id: init_sonar_scanner
         shell: pwsh
         run: |
+          $LOWERCASE_REPOSITORY_OWNER = "${{ github.repository_owner }}".ToLower()        
           .\.sonar\scanner\dotnet-sonarscanner begin `
           /k:"${{ github.repository_owner }}_${{ github.event.repository.name }}" `
-          /o:"${{ steps.lowercase_string_gen.outputs.repository_name }}" `
+          /o:"$LOWERCASE_REPOSITORY_OWNER" `
           /d:sonar.login="$env:SONAR_TOKEN" `
           /d:sonar.host.url="https://sonarcloud.io"
         env:
@@ -172,7 +161,7 @@ jobs:
         shell: pwsh
         run: |
           .\.sonar\scanner\dotnet-sonarscanner end `
-          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.login="$env:SONAR_TOKEN"
         env:
           GITHUB_TOKEN: ${{ secrets.SONAR_GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -191,7 +180,7 @@ jobs:
     needs: ci
     runs-on: windows-latest
     env:
-      NEW_VERSION: ${{ needs.ci.outputs.new_version }}
+      NEW_ASSEMBLY_VERSION: "${{ needs.ci.outputs.new_version }}.0"
       NEW_TAG: ${{ needs.ci.outputs.new_version_tag }}
     steps:
       - name: Checkout repository
@@ -219,8 +208,8 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: Artifacts/Notepads_${{ env.NEW_VERSION }}_Production_Test/Notepads_${{ env.NEW_VERSION }}_x86_x64_ARM64_Production.msixbundle
-          asset_name: Notepads_${{ env.NEW_VERSION }}_x86_x64_ARM64.msixbundle
+          asset_path: Artifacts/Notepads_${{ env.NEW_ASSEMBLY_VERSION }}_Production_Test/Notepads_${{ env.NEW_ASSEMBLY_VERSION }}_x86_x64_ARM64_Production.msixbundle
+          asset_name: Notepads_${{ env.NEW_ASSEMBLY_VERSION }}_x86_x64_ARM64.msixbundle
           asset_content_type: application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
