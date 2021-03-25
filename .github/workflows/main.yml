@@ -67,7 +67,7 @@ jobs:
         run: |
           cd src/Notepads/
           $xml = [xml](Get-Content Package.appxmanifest)
-          $xml.Package.Identity.SetAttribute('Version', '"$env:NEW_VERSION".0')
+          $xml.Package.Identity.SetAttribute('Version', "$env:NEW_VERSION.0")
           $xml.save("src\Notepads\Package.appxmanifest")
         env:
           NEW_VERSION: ${{ steps.tag_generator.outputs.new_version }}
