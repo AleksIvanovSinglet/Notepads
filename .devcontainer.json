@@ -1,5 +1,14 @@
 {
   "extensions": [
-    "coenraads.bracket-pair-colorizer"
+    "coenraads.bracket-pair-colorizer",
+    "editorconfig.editorconfig",
+    "cschleiden.vscode-github-actions",
+    "bierner.markdown-preview-github-styles",
+    "ms-vscode.powershell",
+    "esbenp.prettier-vscode",
+    "ms-vscode-remote.remote-wsl",
+    "ban.spellright",
+    "tabnine.tabnine-vscode",
+    "redhat.vscode-yaml"
   ]
 }
