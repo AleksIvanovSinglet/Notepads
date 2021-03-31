@@ -21,14 +21,9 @@
     "editor.insertSpaces": false,
     "yaml.format.enable": false,
     "tabnine.experimentalAutoImports": true,
-    "prettier.disableLanguages": [
-      "markdown",
-      "yaml"
-    ],
     "diffEditor.ignoreTrimWhitespace": false,
     "explorer.confirmDragAndDrop": false,
-    "window.zoomLevel": -1,
-    "editor.fontWeight": null
+    "window.zoomLevel": -1
   },
   "extensions": [
     "coenraads.bracket-pair-colorizer",
