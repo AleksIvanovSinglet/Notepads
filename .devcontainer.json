@@ -1,4 +1,35 @@
 {
+  "settings": [
+    "editor.renderWhitespace": "trailing",
+    "editor.wordWrap": "on",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "liveServer.settings.donotVerifyTags": true,
+    "explorer.confirmDelete": false,
+    "workbench.startupEditor": "none",
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true,
+    "editor.minimap.enabled": true,
+    "workbench.activityBar.visible": true,
+    "prettier.trailingComma": "all",
+    "[yaml]": {
+      "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "prettier.useEditorConfig": false,
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": false,
+    "editor.autoIndent": "none",
+    "editor.insertSpaces": false,
+    "yaml.format.enable": false,
+    "tabnine.experimentalAutoImports": true,
+    "prettier.disableLanguages": [
+      "markdown",
+      "yaml"
+    ],
+    "diffEditor.ignoreTrimWhitespace": false,
+    "explorer.confirmDragAndDrop": false,
+    "window.zoomLevel": -1,
+    "editor.fontWeight": null
+  ],
   "extensions": [
     "coenraads.bracket-pair-colorizer",
     "editorconfig.editorconfig",
@@ -9,6 +40,7 @@
     "ms-vscode-remote.remote-wsl",
     "ban.spellright",
     "tabnine.tabnine-vscode",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "eamodio.gitlens"
   ]
 }
