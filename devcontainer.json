@@ -1,3 +1,5 @@
-"extensions": [
-  "coenraads.bracket-pair-colorizer"
-]
+{
+  "extensions": [
+    "coenraads.bracket-pair-colorizer"
+  ]
+}
