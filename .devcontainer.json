@@ -1,5 +1,5 @@
 {
-  "settings": [
+  "settings": {
     "editor.renderWhitespace": "trailing",
     "editor.wordWrap": "on",
     "liveServer.settings.donotShowInfoMsg": true,
@@ -29,7 +29,7 @@
     "explorer.confirmDragAndDrop": false,
     "window.zoomLevel": -1,
     "editor.fontWeight": null
-  ],
+  },
   "extensions": [
     "coenraads.bracket-pair-colorizer",
     "editorconfig.editorconfig",
