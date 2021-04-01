@@ -16,6 +16,5 @@
     "tabnine.tabnine-vscode",
     "redhat.vscode-yaml",
     "eamodio.gitlens"
-  ],
-  "postCreateCommand": "yarn install"
+  ]
 }
