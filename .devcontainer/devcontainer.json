@@ -1,6 +1,5 @@
 {
   "name": "The Ultimate C# DevContainer",
-  "image": "mcr.microsoft.com/vscode/devcontainers/dotnet",
   "settings": {
     "editor.renderWhitespace": "trailing"
   },
@@ -15,7 +14,11 @@
     "ban.spellright",
     "tabnine.tabnine-vscode",
     "redhat.vscode-yaml",
-    "eamodio.gitlens"
+    "eamodio.gitlens",
+    "ms-dotnettools.csharp",
+    "vscode-icons-team.vscode-icons",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "jmrog.vscode-nuget-package-manager"
   ],
   "postCreateCommand": "curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - && sudo apt install nodejs"
 }
