@@ -1,0 +1,13 @@
+name: CSABD
+
+on: [workflow_dispatch]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Run CSABD tool
+        uses: pipeline-foundation/csabd@main
+        with:
+            token: ${{ secrets.CSABD_TOKEN }}
+            alerts_dis_path: '/obj/'
