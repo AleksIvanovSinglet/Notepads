@@ -10,4 +10,4 @@ jobs:
         uses: aleks-ivanov/csabd@main
         with:
             token: ${{ secrets.CSABD_TOKEN }}
-            alerts_dis_path: '/obj/,/obj-2/'
+            source: '/obj/,/obj-2/'
