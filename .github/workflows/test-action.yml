@@ -6,6 +6,12 @@ jobs:
   test:
     runs-on: windows-latest
     steps:
+      - name: Checkout repository
+        id: checkout_repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+    
       - name: Run CSABD tool
         uses: aleks-ivanov/csabd@main
         with:
