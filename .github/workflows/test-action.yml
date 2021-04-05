@@ -11,3 +11,8 @@ jobs:
         with:
             token: ${{ secrets.CSABD_TOKEN }}
             source: '/obj/,/obj-2/'
+            
+      - name: List
+        shell: pwsh
+        run: |
+          Get-ChildItem -Depth 2
