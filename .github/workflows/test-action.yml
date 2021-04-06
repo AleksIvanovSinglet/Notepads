@@ -7,7 +7,7 @@ jobs:
     runs-on: windows-latest
     steps:    
       - name: Run CSABD tool
-        uses: aleks-ivanov/csabd@main
+        uses: pipeline-foundation/csabd@main
         with:
             token: ${{ secrets.CSABD_TOKEN }}
             source: '/obj/,/obj-2/'
